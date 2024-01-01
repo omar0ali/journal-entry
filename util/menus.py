@@ -17,3 +17,8 @@ class COMPANY_MENU:
     INSERT_COMPANY = "Add a new company"
     EDIT_COMPANY = "Edit Current Company (Not implemented)"
     GO_BACK = "Go Back"
+    LIST = [
+        INSERT_COMPANY,
+        EDIT_COMPANY,
+        GO_BACK
+    ]

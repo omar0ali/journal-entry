@@ -59,7 +59,7 @@ class Main:
                         inquirer.List(
                             name="selectCompany",
                             message="Operation",
-                            choices=[COMPANY_MENU.INSERT_COMPANY, COMPANY_MENU.GO_BACK]
+                            choices=COMPANY_MENU.LIST
                         )
                     ]
                 )
