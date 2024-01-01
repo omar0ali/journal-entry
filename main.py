@@ -8,6 +8,8 @@ import sys, subprocess
 from util.menus import MAIN_MENU, COMPANY_MENU
 from models.company import Company
 from util.utility import Utility
+import styles
+
 
 class Main:
     console = Console()
@@ -42,17 +44,12 @@ class Main:
             
             if answer.get('selectMain') == MAIN_MENU.ADD_COMPANY:
                 self.clear_screen()
-                self.console.rule("[bold red]Companies")
-                list = self.company.getCompanies()
-                table = Table(title="Account statements")
-                table.add_column("ID", justify="left", style="green", no_wrap=True)
-                table.add_column("Name", justify="left", style="cyan", no_wrap=True)
-                table.add_column("Start Date", justify="left" ,style="green")
-                table.add_column("Description", justify="left", style="cyan")
-                table.add_column("Email", justify="left", style="cyan")
-                table.add_column("Phone", justify="left", style="green")
-                for company in list:
-                    table.add_row(str(company.id), company.name, company.connection_date, company.description, company.email,company.phone)
+                table = styles.createTable(
+                    ["ID", "Name", "Start Date", "Description", "Email", "Phone"],
+                    self.company.getCompanies(),
+                    "Companies",
+                    "Registered Companies"
+                )
                 self.console.print(table)
                 companyAnswer = inquirer.prompt(
                     questions=[

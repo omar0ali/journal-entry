@@ -11,7 +11,7 @@
 
 2. Navigate to the project directory:
     ```bash
-    cd statement-of-account
+    cd journal-entry
     ```
 3. Create a virtual environment (you may choose a different name for your virtual environment):
     ```bash
