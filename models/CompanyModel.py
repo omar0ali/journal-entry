@@ -30,34 +30,57 @@ class CompanyModel:
         except Exception as e:
             return f"Error: {e}"
         
-    def companyUpdate(self, company_id: int, name: str, date: str, desc: str, email: str, phone: str):
+    def companyUpdate(self, company: CompanyConfig, name=None, date=None, desc=None, email=None, phone=None):
         try:
-            errorMessage = ""
+            # Create a dictionary of non-None values
+            update_data = {
+                'name': name,
+                'connection_date': date,
+                'description': desc,
+                'email': email,
+                'phone': phone,
+            }
 
-            validName = utility.validate_empty(name)
-            if validName != True:
-                errorMessage = errorMessage + " " + validName
+            # Validate the provided data
+            error_message = ""
+            for key, value in update_data.items():
+                if value is not None:
+                    if(key == 'connection_date'):
+                        validDate = utility.validate_date(value)
+                        if(validDate!=True):
+                            errorMessage = errorMessage + " " + validDate
+                    if(key == 'name'):
+                        validDate = utility.validate_empty(value)
+                        if(validDate!=True):
+                            errorMessage = errorMessage + " " + validDate
+            if error_message != "":
+                raise ValueError(error_message)
 
-            validDate = utility.validate_date(date)
-            if validDate != True:
-                errorMessage = errorMessage + " " + validDate
+            query, values = utility.sqlGenerateSetClause(company.id, update_data)
 
-            if errorMessage != "":
-                raise ValueError(errorMessage)
-
-            self.cursor.execute('''
-                UPDATE company
-                SET name = ?, connection_date = ?, description = ?, email = ?, phone = ?
-                WHERE id = ?
-            ''', (name, date, desc, email, phone, company_id))
-
+            self.cursor.execute(query, values)
             self.connection.commit()
             return "Data updated successfully!"
         except Exception as e:
             return f"Error: {e}"
 
-    def getCompany(self, id) -> CompanyConfig:
-        self.cursor.execute('SELECT * FROM company WHERE id = ?', (id,))
+
+    
+    def companyRemove(self, company:CompanyConfig):
+        try:
+            errorMessage = ""
+            validName = utility.validate_empty(str(company.id))
+            if validName != True:
+                errorMessage = errorMessage + " " + validName
+            self.cursor.execute(f"DELETE FROM company WHERE id = ?", (company.id))
+            self.connection.commit()
+            return "Data updated successfully!"
+        except Exception as e:
+            return f"Error: {e}"
+        
+        
+    def getCompany(self, company:CompanyConfig) -> CompanyConfig:
+        self.cursor.execute('SELECT * FROM company WHERE id = ?', (str(company.id)))
         company_data = self.cursor.fetchone()
         if company_data:
             return CompanyConfig(*company_data)

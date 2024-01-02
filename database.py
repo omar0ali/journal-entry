@@ -21,7 +21,22 @@ class Database:
                 description TEXT,
                 email TEXT,
                 phone TEXT CHECK (length(phone) <= 15)
-            )                 
+            );               
+        """)
+        
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS transactions (
+                id INTEGER PRIMARY KEY,
+                company_id INTEGER,
+                account TEXT,
+                description TEXT,
+                source TEXT,
+                date DATE,
+                receipt_num TEXT,
+                debit REAL,
+                credit REAL,
+                FOREIGN KEY (company_id) REFERENCES company(id)
+            );                      
         """)
         
         
@@ -37,6 +52,7 @@ class Database:
         return self.cursor()
     
     def disconnectDatabase(self):
+        self.cursor.close()
         self.connection.close()
     
     def checkDatabaseFile():

@@ -17,3 +17,5 @@ class CompanyConfig(Config):
     def getAsList(self):
         return [str(self.id), self.name, self.connection_date, self.description, self.email, self.phone]
     
+    def __str__(self) -> str:
+        return " | ".join(self.getAsList())

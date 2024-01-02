@@ -57,7 +57,7 @@ def askWithConfirm(question: str) -> Any:
                 ),
                 inquirer.List(
                     name="cs",
-                    message="Do you want to keep this ({qs}) ?",
+                    message="Do you want to processed with this choice ({qs}) ?",
                     choices=["Yes", "No", "Cancel"]
                 )
             ]
@@ -69,6 +69,42 @@ def askWithConfirm(question: str) -> Any:
         else:
             messageEmoji(f"Please enter {question}", ":warning:")
             continue
+    
+    
+def askWithConfirmOrKeep(question:str):
+    answer = inquirer.prompt(
+        questions=[
+            inquirer.List(
+                name="kp",
+                message=f"{question}",
+                choices=["Keep Previous Cell", "Edit Current Cell"]
+            ),
+        ]
+    )
+    if(answer.get('kp')=="Keep Previous Cell"):
+        return None
+    while True:
+        answer = inquirer.prompt(
+            questions=[
+                inquirer.Text(
+                    name="qs",
+                    message=f"{question}"
+                ),
+                inquirer.List(
+                    name="cs",
+                    message="Do you want to processed with this choice ({qs}) ?",
+                    choices=["Yes", "No", "Cancel"]
+                )
+            ]
+        )
+        if(answer.get('cs') == "Yes"):
+            return answer.get("qs")
+        elif answer.get("cs") == "Cancel":
+            raise ValueError("Canceled Operation")
+        else:
+            messageEmoji(f"Please enter {question}", ":warning:")
+            continue
+    
         
 def askFromList(question:str, list:[str]) -> Any:
     answer = inquirer.prompt(
