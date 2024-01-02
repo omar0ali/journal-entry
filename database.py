@@ -1,14 +1,15 @@
 import sqlite3
 from rich.console import Console
 from rich.theme import Theme
+import glob
 class Database:
     console = Console(theme=Theme({
         "info": "dim cyan",
         "warning": "magenta",
         "danger": "bold red"
     }))
-    def __init__(self) -> None:
-        self.connection = sqlite3.connect('kashfHesab.db')
+    def __init__(self, name:str = "JournalEntry") -> None:
+        self.connection = sqlite3.connect(f"{name}.db")
         self.cursor = self.connection.cursor()
         ## CREATE TABELS ##
         # CREATE COMPANY TABLE
@@ -37,3 +38,12 @@ class Database:
     
     def disconnectDatabase(self):
         self.connection.close()
+    
+    def checkDatabaseFile():
+        matching_files = glob.glob("./*.db")
+        if matching_files:
+            print("Database file's found:")
+            for file_path in matching_files:
+                print(file_path)
+        else:
+            print("No databases found.")

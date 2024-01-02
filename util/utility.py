@@ -1,20 +1,21 @@
 from datetime import datetime
 import re
 from rich.console import Console
-class Utility:
-    def __init__(self) -> None:
-        self.console = Console()
-    def validate_date(self, date_str)->bool:
-        try:
-            datetime.strptime(date_str, '%Y-%m-%d')
-            return True
-        except ValueError as e:
-            self.console.print("Validation Failed: "+e, style="danger")
-            return False
+
+def validate_date(date_str) -> bool | str:
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError as e:
+        return f"Validation Failed: {e}."
         
-    def validate_phone(self, phone_str) -> bool:
-        validate = re.match(r'^\d{10}$', phone_str) is not None
-        if(validate==None):
-            self.console.print("Validation phone number failed.", style="danger")
-            return False
-        return 
+def validate_phone(phone_str) -> bool | str:
+    validate = re.match(r'^\d{10}$', phone_str)
+    if(validate == None):
+        return "Validation phone number failed."
+    return True
+
+def validate_empty(text) -> bool | str:
+    if(text==""):
+        return "Validation text is empty."
+    return True

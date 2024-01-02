@@ -1,5 +1,5 @@
 import datetime as date
-class AccountOfStatement:
+class JournalEntry:
     id: int
     credit: int
     debit: int

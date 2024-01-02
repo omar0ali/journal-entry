@@ -1,10 +1,9 @@
 class MAIN_MENU:
-    ALL_ACCOUNTS = "Account Statements"
-    ACCOUNT_COMPANY = "Accounts Statements of a specific company"
-    ADD_COMPANY = "Companies"
+    ALL_ACCOUNTS = "All Transactions"
+    ACCOUNT_COMPANY = "Transactions of a company"
+    ADD_COMPANY = "All Companies"
     REMARKS = "Remarks"
     EXIT = "Exit"
-    # Create a list of menu items
     LIST = [
         ALL_ACCOUNTS,
         ACCOUNT_COMPANY,
@@ -13,12 +12,23 @@ class MAIN_MENU:
         EXIT
     ]
     
+    
 class COMPANY_MENU:
-    INSERT_COMPANY = "Add a new company"
-    EDIT_COMPANY = "Edit Current Company (Not implemented)"
+    INSERT_COMPANY = "Add Company"
+    EDIT_COMPANY = "Edit Company"
     GO_BACK = "Go Back"
     LIST = [
         INSERT_COMPANY,
         EDIT_COMPANY,
+        GO_BACK
+    ]
+    
+class All_TRANSACTIONS_MENU:
+    INERT_TRANSACTION = "Add Record."
+    EDIT_TRANSACTION = "Edit Record."
+    GO_BACK = "Go Back"
+    LIST = [
+        INERT_TRANSACTION,
+        EDIT_TRANSACTION,
         GO_BACK
     ]
