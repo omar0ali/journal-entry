@@ -9,7 +9,7 @@ class Database:
         "danger": "bold red"
     }))
     def __init__(self, name:str = "JournalEntry") -> None:
-        self.connection = sqlite3.connect(f"{name}.db")
+        self.connection = sqlite3.connect(f"./db/{name}.db")
         self.cursor = self.connection.cursor()
         ## CREATE TABELS ##
         # CREATE COMPANY TABLE

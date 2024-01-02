@@ -1,5 +1,4 @@
 venv
 __pycache__
 .vscode
-kashfHesab.db
-JournalEntry.db
+db/JournalEntry.db
