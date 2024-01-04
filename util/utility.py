@@ -22,13 +22,14 @@ def validate_empty(text) -> bool | str:
     return True
 
 
-def sqlGenerateSetClause(id:int, data: dict[str, Any | None]):
+
+def sqlGenerateSetClause(id:int, data: dict[str, Any | None], table:str):
     # Generate the SET clause for the SQL query
     set_clause = ', '.join(f'{key} = ?' for key, value in data.items() if value is not None)
 
     # Execute the update query
     query = f'''
-        UPDATE company
+        UPDATE {table}
         SET {set_clause}
         WHERE id = ?
     '''

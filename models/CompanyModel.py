@@ -56,7 +56,7 @@ class CompanyModel:
             if error_message != "":
                 raise ValueError(error_message)
 
-            query, values = utility.sqlGenerateSetClause(company.id, update_data)
+            query, values = utility.sqlGenerateSetClause(company.id, update_data, "company")
 
             self.cursor.execute(query, values)
             self.connection.commit()

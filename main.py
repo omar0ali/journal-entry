@@ -26,11 +26,15 @@ class Main:
         Styles.printRule("[bold red]Main Menu")
         while(True):
             answer = Styles.askFromList("Menu", MAIN_MENU.LIST)
-            if answer == MAIN_MENU.ADD_COMPANY:
+            if answer == MAIN_MENU.All_COMPANIES:
                 CompanyView.display_menu(self.db)
             
             elif answer == MAIN_MENU.ALL_ACCOUNTS:
                 TransactionView.display_menu(self.db)
+            
+            elif answer == MAIN_MENU.ACCOUNT_COMPANY:
+                TransactionView.display_menu_company(self.db)
+            
             
             elif answer == MAIN_MENU.EXIT:
                 Styles.message("Data saved.")

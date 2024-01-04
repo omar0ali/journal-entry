@@ -1,13 +1,14 @@
 from database import Database
 import util.utility as utility
-from configs.TransactionConfig import TranscationConfig
+from configs.TransactionConfig import TransactionConfig, TransactionConfigBalance
 from configs.CompanyConfig import CompanyConfig
+from util.menus import MESSAGES
 class TransactionModel:
     def __init__(self, db:Database) -> None:
         self.connection = db.getConnection()
         self.cursor = db.getConnection().cursor()
         
-    def transactionInsert(self, company:CompanyConfig, account:str, description:str, source:str, date:str, receipt_num:str, debit: float, credit:float ):
+    def transactionInsert(self, company:CompanyConfig, company_name:str, account:str, description:str, source:str, date:str, receipt_num:str, debit: float, credit:float ):
         try:
             errorMessage = ""
                 
@@ -22,29 +23,29 @@ class TransactionModel:
             if(errorMessage!=""):
                 raise ValueError(errorMessage)
             self.cursor.execute('''
-                INSERT INTO transactions (company_id, account, description, source, date, receipt_num, debit, credit)
-                VALUES (?, ?, ?, ?, ? ,?, ?, ?)
-                ''', (str(company.id), account, description, source, date , receipt_num, debit, credit))
+                INSERT INTO transactions (company_id, company_name, account, description, source, date, receipt_num, debit, credit)
+                VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?)
+                ''', (str(company.id), company_name, account, description, source, date , receipt_num, str(debit), str(credit)))
             self.connection.commit()
-            return "Data inserted successfully!"
+            return MESSAGES.SUCCESS_DATA_INSERTED
         except Exception as e:
             return f"Error: {e}"
         
     
-    def transactionUpdate(self, journal: TranscationConfig, company_id=None, account=None, description=None, source=None, date=None, receipt_num=None, debit=None, credit=None):
+    def transactionUpdate(self, journal: TransactionConfig, company_id=None, company_name=None, account=None, description=None, source=None, date=None, receipt_num=None, debit=None, credit=None):
         try:
             # Create a dictionary of non-None values
             update_data = {
                 'company_id': company_id,
+                'company_name': company_name,
                 'account': account,
-                'date': date,
                 'description': description,
                 'source': source,
+                'date': date,
                 'receipt_num': receipt_num,
                 'debit': debit,
                 'credit': credit,
             }
-
             # Validate the provided data
             error_message = ""
             for key, value in update_data.items():
@@ -54,34 +55,68 @@ class TransactionModel:
                         if(validDate!=True):
                             errorMessage = errorMessage + " " + validDate
                     if(key == 'company_id'):
-                        validDate = utility.validate_empty(value)
-                        if(validDate!=True):
-                            errorMessage = errorMessage + " " + validDate
+                        validID = utility.validate_empty(value)
+                        if(validID!=True):
+                            errorMessage = errorMessage + " " + validID
                     if(key == 'account'):
-                        validDate = utility.validate_empty(value)
-                        if(validDate!=True):
-                            errorMessage = errorMessage + " " + validDate
+                        validAccount = utility.validate_empty(value)
+                        if(validAccount!=True):
+                            errorMessage = errorMessage + " " + validAccount
+                    if(key == 'company_name'):
+                        company = utility.validate_empty(value)
+                        if(company!=True):
+                            errorMessage = errorMessage + " " + company
             if error_message != "":
                 raise ValueError(error_message)
-
-            query, values = utility.sqlGenerateSetClause(journal.id, update_data)
+            
+            query, values = utility.sqlGenerateSetClause(journal.id, update_data,"transactions")
 
             self.cursor.execute(query, values)
             self.connection.commit()
-            return "Data updated successfully!"
+            return MESSAGES.SUCCESS_DATA_UPDATED
         except Exception as e:
             return f"Error: {e}"
-        
-    def getJournal(self, company:TranscationConfig) -> TranscationConfig:
-        self.cursor.execute('SELECT * FROM transactions WHERE id = ?', (str(company.id)))
+
+
+    def getJournal(self, journal:TransactionConfig) -> TransactionConfig:
+        self.cursor.execute('SELECT * FROM transactions WHERE id = ?', (str(journal.id)))
         transaction_data = self.cursor.fetchone()
         if transaction_data:
-            return TranscationConfig(*transaction_data)
+            return TransactionConfig(*transaction_data)
         else:
             return None
         
-    def getJournals(self):
-        self.cursor.execute('SELECT * FROM transactions')
+    # Either we return all transactions, or if CompanyConfig is present, 
+    #   we return transactions within the company.
+    def getJournals(self, company: CompanyConfig = None):
+        if(company):
+            self.cursor.execute('SELECT * FROM transactions where company_id = ?', (str(company.id)))
+        else:
+            self.cursor.execute('SELECT * FROM transactions')
         transactions_data = self.cursor.fetchall()
-        transactions_data = [TranscationConfig(*transaction_data) for transaction_data in transactions_data]
+        if company:
+            transactions_data = [TransactionConfigBalance(*transaction_data) for transaction_data in transactions_data]
+        else:
+            transactions_data = [TransactionConfig(*transaction_data) for transaction_data in transactions_data]
+        if company:
+            # Calculate the balance
+            total: float = 0.0
+            for data in transactions_data:
+                if data.credit > 0:
+                    total = total - data.credit
+                else:
+                    total = total + data.debit
+                data.balance = round(total,2)
         return transactions_data
+
+    def journalRemove(self, journal:TransactionConfig):
+        try:
+            errorMessage = ""
+            validName = utility.validate_empty(str(journal.id))
+            if validName != True:
+                errorMessage = errorMessage + " " + validName
+            self.cursor.execute(f"DELETE FROM transactions WHERE id = ?", (journal.id))
+            self.connection.commit()
+            return MESSAGES.SUCCESS_DATA_UPDATED
+        except Exception as e:
+            return f"Error: {e}"
