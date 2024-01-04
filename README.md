@@ -2,6 +2,14 @@
 > Before launching the app, ensure that Python 3.x is installed on your system. Please visit: https://www.python.org/downloads/ download and install python in your system.
 
 
+# CLI Accounting Journal Entry App
+The go-to solution for efficient and accurate accounting journal entries. This CLI application is tailored for professionals, accountants, and businesses seeking a digital platform to record and manage their financial transactions seamlessly. As a CLI app, it's designed for simplicity and speed, allowing you to record debit and credit transactions seamlessly from the command line.
+
+1. Straightforward Commands: Easily input debit and credit transactions using simple, intuitive commands for quick journal entry creation.
+2. Portability: Carry out your accounting tasks from any terminal or command prompt, ensuring flexibility and convenience.
+3. Quick Setup: Get started in no time with a hassle-free setup process, allowing you to focus on managing your journal entries effortlessly.
+
+
 ## Getting Started
 
 1. Clone the repository to your local machine:
@@ -72,5 +80,5 @@ To make it easy for users to run your Python application, a standalone executabl
     ./main.py
     ```
 
-## Usage
-...
+### Upcoming Features:
+GUI Version: I am planning on making a graphical user interface version of this in the feature. Stay tuned for a more intuitive and visually enhanced experience in the near future!
