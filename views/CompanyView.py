@@ -1,7 +1,7 @@
 import util.style.styles as Styles
 from models.CompanyModel import CompanyModel
 from util.menus import COMPANY_MENU
-from database import Database
+from db.database_sql import Database
 def display_menu(db: Database):
     company = CompanyModel(db)
     Styles.clear_screen()

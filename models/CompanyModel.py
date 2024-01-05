@@ -1,6 +1,7 @@
-from database import Database
+from db.database_sql import Database
 import util.utility as utility
 from configs.CompanyConfig import CompanyConfig
+from util.menus import MESSAGES
 class CompanyModel:
     def __init__(self, db: Database) -> None:
         self.connection = db.getConnection()
@@ -26,7 +27,7 @@ class CompanyModel:
                 VALUES (?,?,?,?,?)
             ''', (name, date, desc, email, phone))
             self.connection.commit()
-            return "Data inserted successfully!"
+            return MESSAGES.SUCCESS_DATA_INSERTED
         except Exception as e:
             return f"Error: {e}"
         
@@ -60,7 +61,7 @@ class CompanyModel:
 
             self.cursor.execute(query, values)
             self.connection.commit()
-            return "Data updated successfully!"
+            return MESSAGES.SUCCESS_DATA_UPDATED
         except Exception as e:
             return f"Error: {e}"
 
@@ -69,12 +70,12 @@ class CompanyModel:
     def companyRemove(self, company:CompanyConfig):
         try:
             errorMessage = ""
-            validName = utility.validate_empty(str(company.id))
-            if validName != True:
-                errorMessage = errorMessage + " " + validName
-            self.cursor.execute(f"DELETE FROM company WHERE id = ?", (company.id))
+            validId = utility.validate_empty(str(company.id))
+            if validId != True:
+                errorMessage = errorMessage + " " + validId
+            self.cursor.execute(f"DELETE FROM company WHERE id = ?", (str(company.id)))
             self.connection.commit()
-            return "Data updated successfully!"
+            return MESSAGES.SUCCESS_DATA_UPDATED
         except Exception as e:
             return f"Error: {e}"
         

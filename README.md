@@ -84,4 +84,4 @@ To make it easy for users to run your Python application, a standalone executabl
     ```
 
 ### Upcoming Features
-GUI Version: I am also planning on making a graphical user interface version of this application in the feature. Stay tuned for a more intuitive and visually enhanced experience in the near future!
+GUI Version: I am also planning on making a graphical user interface version of this application in the feature. Stay tuned for a more intuitive and visually enhanced experience.

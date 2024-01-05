@@ -1,4 +1,4 @@
-from database import Database
+from db.database_sql import Database
 import util.utility as utility
 from configs.TransactionConfig import TransactionConfig, TransactionConfigBalance
 from configs.CompanyConfig import CompanyConfig
@@ -115,7 +115,7 @@ class TransactionModel:
             validName = utility.validate_empty(str(journal.id))
             if validName != True:
                 errorMessage = errorMessage + " " + validName
-            self.cursor.execute(f"DELETE FROM transactions WHERE id = ?", (journal.id))
+            self.cursor.execute(f"DELETE FROM transactions WHERE id = ?", (str(journal.id)))
             self.connection.commit()
             return MESSAGES.SUCCESS_DATA_UPDATED
         except Exception as e:

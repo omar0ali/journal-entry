@@ -1,4 +1,4 @@
-from database import Database
+from db.database_sql import Database
 import inquirer
 from pyfiglet import Figlet
 import util.style.styles as Styles

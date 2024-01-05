@@ -3,7 +3,7 @@ import util.style.styles as Styles
 from models.TransactionsModel import TransactionModel
 from models.CompanyModel import CompanyModel
 from util.menus import All_TRANSACTIONS_MENU
-from database import Database
+from db.database_sql import Database
 
 
 
