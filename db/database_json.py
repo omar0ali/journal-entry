@@ -65,6 +65,9 @@ class DatabaseJSON():
     def getData(self, key:str = None) -> Any:
         if self.data == None:
             raise ImportError("Couldn't load data.")
-        if key != None:
-            return self.data[key]
+        try:
+            if key != None:
+                return self.data[key]
+        except Exception as e:
+            print(e)
         return self.data

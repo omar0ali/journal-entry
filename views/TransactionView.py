@@ -4,6 +4,7 @@ from models.TransactionsModel import TransactionModel
 from models.CompanyModel import CompanyModel
 from util.menus import All_TRANSACTIONS_MENU
 from db.database_sql import Database
+from db.database_json import DatabaseJSON
 
 
 
@@ -35,16 +36,17 @@ def display_menu(db:Database):
     )
     answer = Styles.askFromList("Transaction Menu", All_TRANSACTIONS_MENU.LIST)
     if answer == All_TRANSACTIONS_MENU.INERT_TRANSACTION:
+        db = DatabaseJSON()
         try:
             answer: CompanyConfig = Styles.askFromList("Select Company", company.getCompanies())
             result = journal.transactionInsert(
                 answer,
                 answer.name,
-                Styles.askWithConfirm("Account"),
-                Styles.askWithConfirm("Description"),
-                Styles.askWithConfirm("Source"),      
-                Styles.askWithConfirm("Date (YYYY-MM-DD)"),
-                Styles.askWithConfirm("Receipt Number"),
+                Styles.askWithConfirmShowHistory("Account","Account", db),
+                Styles.askWithConfirmShowHistory("Description", "Description", db),
+                Styles.askWithConfirmShowHistory("Source", "Source", db),      
+                Styles.askDateConfirm("Date (YYYY-MM-DD)"),
+                Styles.askWithConfirmShowHistory("Receipt Number", "Receipt Number",db),
                 Styles.askWithConfirm("Debit"),
                 Styles.askWithConfirm("Credit")
             )

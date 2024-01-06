@@ -3,10 +3,12 @@ from rich.console import Console
 from rich.table import Table
 from rich import print
 from rich.text import Text
+from datetime import date
 import sys
 import subprocess
 from configs.Config import Config
 import inquirer
+from db.database_json import DatabaseJSON
 
 def createTable(columns: list[str], rows: list[Config], name:str, title:str) -> Table:
     console = Console()
@@ -30,7 +32,7 @@ def printTable(table) -> Table:
 def printRule(text: str) -> None:
     Console().rule(text)
 
-# Clearning the screen.
+# Clearing the screen.
 def clear_screen():
     os = sys.platform
     if os == 'win32':
@@ -70,7 +72,54 @@ def askWithConfirm(question: str) -> Any:
             messageEmoji(f"Please enter {question}", ":warning:")
             continue
     
-    
+def askWithConfirmShowHistory(question: str, key:str, db:DatabaseJSON):
+    data: list = db.getData(key)
+    try:
+        data.append("*Add New")
+        data.append("Cancel")
+    except Exception as e:
+        data = ["*Add New", "Cancel"]
+    while True:
+        answer = inquirer.prompt(
+            questions=[
+                inquirer.List(
+                    name="qs",
+                    message=f"{question}",
+                    choices=data
+                )
+            ]
+        )
+        value:str = None
+        if answer.get("qs") == "*Add New":
+            value = askWithConfirm(f"{question}")
+            db.add_element(key, value)
+            return value
+        elif answer.get("qs") == "Cancel":
+            raise ValueError("Canceled Operation")
+        else:
+            return answer.get("qs")
+
+
+def askDateConfirm(question:str):
+    while True:
+        answer = inquirer.prompt(
+            questions=[
+                inquirer.List(
+                    name="qs",
+                    message=question,
+                    choices=[date.today(), "*Add New", "Cancel"]
+                )
+            ]
+        )
+        value: str = None
+        if answer.get("qs") == date.today():
+            return str(answer.get("qs"))
+        elif answer.get("qs") == "*Add New":
+            value = askWithConfirm(question)
+            return value
+        elif answer.get("qs") == "Cancel":
+            raise ValueError("Canceled Operation")
+
 def askWithConfirmOrKeep(question:str):
     answer = inquirer.prompt(
         questions=[

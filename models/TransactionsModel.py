@@ -86,7 +86,7 @@ class TransactionModel:
         else:
             return None
         
-    # Either we return all transactions, or if CompanyConfig is present, 
+    # Either we return all transactions, or if CompanyConfig passed as an argument, 
     #   we return transactions within the company.
     def getJournals(self, company: CompanyConfig = None):
         if(company):

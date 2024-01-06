@@ -1,4 +1,4 @@
-# Statement of account
+# Journal Entry
 > Before launching the app, ensure that Python 3.x is installed on your system. Please visit: https://www.python.org/downloads/ download and install python in your system.
 
 
