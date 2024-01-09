@@ -26,6 +26,7 @@ def createTable(columns: list[str], rows: list[Config], name:str, title:str) -> 
         table.add_row(*row_as_strings)
     return table
 
+
 def printTable(table) -> Table:
     Console().print(table)
 

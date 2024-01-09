@@ -87,7 +87,7 @@ class TransactionModel:
             return None
         
     # Either we return all transactions, or if CompanyConfig passed as an argument, 
-    #   we return transactions within the company.
+    #   we return transactions connected to that company.
     def getJournals(self, company: CompanyConfig = None):
         if(company):
             self.cursor.execute('SELECT * FROM transactions where company_id = ?', (str(company.id)))
@@ -99,15 +99,29 @@ class TransactionModel:
         else:
             transactions_data = [TransactionConfig(*transaction_data) for transaction_data in transactions_data]
         if company:
-            # Calculate the balance
+            # Calculate the balance, totalDebit, totalCredit, extract start date, and end date.
             total: float = 0.0
+            totalDebit: float = 0.0
+            totalCredit: float = 0.0
+            startDate: str
+            endDate:str
+            data_size = transactions_data.__len__()-1
+            data_index = 0
             for data in transactions_data:
+                if data_index == 0 :
+                    startDate = str(data.date)
+                elif data_index == data_size:
+                    endDate = str(data.date)
+                totalDebit = totalDebit + data.debit
+                totalCredit = totalCredit + data.credit
+                
                 if data.credit > 0:
                     total = total - data.credit
                 else:
                     total = total + data.debit
                 data.balance = round(total,2)
-        return transactions_data
+                data_index = data_index+1
+        return transactions_data, totalDebit, totalCredit, startDate, endDate 
 
     def journalRemove(self, journal:TransactionConfig):
         try:

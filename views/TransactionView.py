@@ -12,15 +12,22 @@ def display_menu_company(db:Database):
     journal = TransactionModel(db)
     company = CompanyModel(db)
     answer:CompanyConfig = Styles.askFromList("Select Company", company.getCompanies())
+    transactions, totalDebit, totalCredit, startDate, endDate = journal.getJournals(answer)
     Styles.clear_screen()
     Styles.printTable(
         Styles.createTable(
             ["ID", "Company ID", "Company Name", "Account", "Description", "Source", "Date", "Receipt Number", "Debit", "Credit", "Balance"],
-            journal.getJournals(answer),
+            transactions,
             "Journals",
             "Registered Journals"
         )
     )
+    print(f"Start Date: {startDate}")
+    print(f"End Date: {endDate}")
+    print(f"Total Debit: {round(totalDebit,2)}")
+    print(f"Total Credit: {round(totalCredit,2)}")
+    print(f"Reaming Value of Goods: {round(totalDebit-totalCredit, 2)}")
+    print("-------------")
     
 def display_menu(db:Database):
     journal = TransactionModel(db)
