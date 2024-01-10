@@ -121,7 +121,8 @@ class TransactionModel:
                     total = total + data.debit
                 data.balance = round(total,2)
                 data_index = data_index+1
-        return transactions_data, totalDebit, totalCredit, startDate, endDate 
+            return transactions_data, totalDebit, totalCredit, startDate, endDate
+        return transactions_data
 
     def journalRemove(self, journal:TransactionConfig):
         try:
