@@ -4,6 +4,7 @@ from typing import Any
 from rich.console import Console
 from fpdf import FPDF
 import os
+from datetime import date
 
 from configs.TransactionConfig import TransactionConfigBalance
 
@@ -67,10 +68,14 @@ def exportTransactionPDF(transactions: list[TransactionConfigBalance],totalDebit
     pdf.cell(0, 10, f"Total Credit: {round(totalCredit, 2)}", ln=True, align='C')
     pdf.cell(0, 10, f"Total debit: {round(totalDebit, 2)}", ln=True, align='C')
     pdf.cell(0, 10, f"Reaming Value of Goods: {round(totalDebit-totalCredit, 2)}", ln=True, align='C')
-    checkDirExists("assets")
-    pdf.output("assets/output.pdf")
-    print("PDF file exported")
-    print(os.getcwd()+"/assets/output.pdf")
+    if len(transactions)>0:
+        path = f"assets/output-{date.today()}-{transactions[0].company_name}.pdf"
+        checkDirExists("assets")
+        pdf.output(path)
+        print("PDF file exported")
+        print(os.getcwd()+f"/{path}")
+    else:
+        print("There is no transaction...")
     
     
     
@@ -78,9 +83,6 @@ def checkDirExists(dir: str):
     dir: str = os.getcwd()+"/"+dir
     if not os.path.exists(dir):    
         os.makedirs(dir)
-        print(f"Directory '{dir}' created.")
-    else:
-        print(f"Directory '{dir}' already exists.")
         
         
         
