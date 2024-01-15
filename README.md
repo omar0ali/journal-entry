@@ -18,7 +18,7 @@ The go-to solution for efficient and accurate accounting journal entries. This C
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/omar0ali/statement-of-account.git
+   git clone https://github.com/omar0ali/journal-entry.git
 
 2. Navigate to the project directory:
     ```bash
