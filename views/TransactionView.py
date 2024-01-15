@@ -5,6 +5,7 @@ from models.CompanyModel import CompanyModel
 from util.menus import All_TRANSACTIONS_MENU
 from db.database_sql import Database
 from db.database_json import DatabaseJSON
+from util import utility as Utility
 
 
 
@@ -28,6 +29,11 @@ def display_menu_company(db:Database):
     print(f"Total Credit: {round(totalCredit,2)}")
     print(f"Reaming Value of Goods: {round(totalDebit-totalCredit, 2)}")
     print("-------------")
+    tempAnswer = Styles.askFromList(
+        "Would you like to export this table to a PDF file", ["Yes", "No"]
+    )
+    if tempAnswer == "Yes":
+        Utility.exportTransactionPDF(transactions, totalDebit, totalCredit, startDate, endDate)
     
 def display_menu(db:Database):
     journal = TransactionModel(db)

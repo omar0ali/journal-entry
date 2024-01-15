@@ -3,3 +3,5 @@ __pycache__
 .vscode
 db/data/*
 db/data/*
+output.pdf
+assets

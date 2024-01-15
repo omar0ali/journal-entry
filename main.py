@@ -7,6 +7,7 @@ from models.CompanyModel import CompanyModel
 import views.CompanyView as CompanyView
 from models.TransactionsModel import TransactionModel
 import views.TransactionView as TransactionView
+import util.utility as Utility
 
 class Main:
     db = None
@@ -34,7 +35,6 @@ class Main:
             
             elif answer == MAIN_MENU.ACCOUNT_COMPANY:
                 TransactionView.display_menu_company(self.db)
-            
             
             elif answer == MAIN_MENU.EXIT:
                 Styles.message("Data saved.")

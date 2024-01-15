@@ -103,8 +103,8 @@ class TransactionModel:
             total: float = 0.0
             totalDebit: float = 0.0
             totalCredit: float = 0.0
-            startDate: str
-            endDate:str
+            startDate: str = ""
+            endDate:str = ""
             data_size = transactions_data.__len__()-1
             data_index = 0
             for data in transactions_data:
