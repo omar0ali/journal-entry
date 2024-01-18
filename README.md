@@ -56,7 +56,7 @@ When you're done working on the project, you can deactivate the virtual environm
 deactivate
 ```
 
-## Using the Standalone Executable
+## Using the Standalone Executable - Not yet available
 To make it easy for users to run your Python application, a standalone executable has been created using PyInstaller. Follow these steps to use the executable on your machine:
 
 - Download the standalone executable for your operating system:
