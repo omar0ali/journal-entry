@@ -1,16 +1,9 @@
 from datetime import datetime
 import re
 from typing import Any
-from rich.console import Console
-from fpdf import FPDF
-
 from .pdf_utility import PdfUtility
-
-import os
 from datetime import date
-
 from configs.TransactionConfig import TransactionConfigBalance
-
 def validate_date(date_str) -> bool | str:
     try:
         datetime.strptime(date_str, '%Y-%m-%d')
@@ -34,7 +27,20 @@ def validate_empty(text) -> bool | str:
 def exportTransactionPDF(transactions: list[TransactionConfigBalance],totalDebit, totalCredit, startDate, endDate):
             
     nPdf = PdfUtility()
-    nPdf.createTable(["ID", "CD", "Company Name", "Account---", "Description--", "Source---", "Date-----","Rec.#", "Debit", "Credit", "Balance"], lambda: print("Testing"))
+    nPdf.createTable([
+        "ID",
+        "CD",
+        "Company Name",
+        "Account---",
+        "Description--",
+        "Source---",
+        "Date-----",
+        "Rec.#",
+        "Debit",
+        "Credit",
+        "Balance"
+        ]
+    )
     
     for row in transactions:
         nPdf.addRowTable([
@@ -62,22 +68,14 @@ def exportTransactionPDF(transactions: list[TransactionConfigBalance],totalDebit
         f"Total debit: {round(totalDebit, 2)}",
         f"Reaming Value of Goods: {round(totalDebit-totalCredit, 2)}"
     ])
-    if len(transactions)>0:
-        path = f"assets/output-{date.today()}-{transactions[0].company_name}.pdf"
-        checkDirExists("assets")
-        nPdf.pdf.output(path)
-        print("PDF file exported")
-        print(os.getcwd()+f"/{path}")
-    else:
-        print("There is no transaction...")
-
-
-def checkDirExists(dir: str):
-    dir: str = os.getcwd()+"/"+dir
-    if not os.path.exists(dir):    
-        os.makedirs(dir)
-        
-        
+    
+    try:
+        if len(transactions)<0:
+            raise IndexError("No transactions to read.")
+        nPdf.export(f"assets/output-{date.today()}-{transactions[0].company_name}.pdf")
+    except Exception as e:
+        print(e)
+    
         
 def sqlGenerateSetClause(id:int, data: dict[str, Any | None], table:str):
     # Generate the SET clause for the SQL query

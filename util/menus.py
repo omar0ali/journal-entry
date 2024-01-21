@@ -2,7 +2,7 @@ class MAIN_MENU:
     ALL_ACCOUNTS = "All Transactions"
     ACCOUNT_COMPANY = "Transactions of a company"
     All_COMPANIES = "All Companies"
-    REMARKS = "Remarks"
+    REMARKS = "Remarks - not implemented yet"
     EXIT = "Exit"
     LIST = [
         ALL_ACCOUNTS,

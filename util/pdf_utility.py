@@ -32,7 +32,7 @@ class PdfUtility():
             self.pdf.ln()
             return
         self.pdf.ln(v)
-    def createTable(self, array: list, registerRows):
+    def createTable(self, array: list):
         # Header
         self._widthOfEachCell = []
         for a in array:
@@ -40,5 +40,15 @@ class PdfUtility():
             self._widthOfEachCell.append(width)
             self.pdf.cell(width, 10, a,align="L", border=1)
         self.pdf.ln()
-        registerRows()
+    def export(self, path):
+        self.checkDirExists("assets")
+        self.pdf.output(path)
+        print(f"File exported {os.getcwd()}/{path}")
         
+        
+        
+    # Will create a directory if it does not exists.    
+    def checkDirExists(self, dir: str):
+        dir: str = os.getcwd()+"/"+dir
+        if not os.path.exists(dir):    
+            os.makedirs(dir)
